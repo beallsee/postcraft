@@ -1,0 +1,1118 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PostCraft — мастерская контента</title>
+  <style>
+    
+:root {
+  color-scheme: dark;
+  --bg: #0b0d12;
+  --panel: #141821;
+  --panel-hover: #1b2130;
+  --line: #292f3d;
+  --text: #f1f3f9;
+  --muted: #9ba4b5;
+  --accent: #8b7cff;
+  --accent-hover: #a195ff;
+  --radius: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 80% 0%, #19152e 0%, transparent 36%),
+    var(--bg);
+  color: var(--text);
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: background-color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding: 12px 13px;
+  color: var(--text);
+  background: #0e1119;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #737d92;
+}
+
+textarea {
+  min-height: 190px;
+  resize: vertical;
+}
+
+select {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -0.8px;
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+h3 {
+  margin-bottom: 10px;
+  font-size: 17px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+p {
+  color: var(--muted);
+}
+
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+}
+
+.app > aside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 28px 18px;
+  background: rgba(15, 18, 27, 0.96);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+
+.brand {
+  padding: 0 12px;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+nav {
+  display: grid;
+  gap: 8px;
+}
+
+nav button {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 14px;
+  text-align: left;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+nav button:hover {
+  color: var(--text);
+  background: var(--panel-hover);
+}
+
+nav button.active {
+  color: #fff;
+  background: rgba(139, 124, 255, 0.15);
+  border-color: rgba(139, 124, 255, 0.3);
+}
+
+.app > main {
+  width: 100%;
+  min-width: 0;
+  max-width: 1440px;
+  padding: 36px clamp(20px, 4vw, 54px);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.top > div {
+  min-width: 0;
+}
+
+.top p {
+  margin-bottom: 0;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 11px 16px;
+  font-weight: 650;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.primary {
+  color: #fff;
+  background: var(--accent);
+}
+
+.primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.secondary {
+  color: var(--text);
+  background: #1a1f2c;
+  border-color: var(--line);
+}
+
+.secondary:hover {
+  background: #252b3b;
+}
+
+.section {
+  display: none;
+  min-width: 0;
+}
+
+.section.active {
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.grid > .panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel {
+  min-width: 0;
+  padding: 24px;
+  background: rgba(20, 24, 33, 0.94);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.stat {
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.field label,
+label {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+#char-count {
+  font-variant-numeric: tabular-nums;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.post-list {
+  display: grid;
+  gap: 14px;
+}
+
+.post {
+  min-width: 0;
+  padding: 18px;
+  background: #10141e;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.post:hover {
+  border-color: #45405f;
+}
+
+.post-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.post-head h3 {
+  margin-bottom: 10px;
+}
+
+.post > p {
+  margin: 10px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 5px 8px 0;
+  padding: 4px 9px;
+  color: #c5c9d8;
+  background: #202536;
+  border: 1px solid #30364a;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.post-actions button {
+  min-height: 40px;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.empty {
+  padding: 30px 20px;
+  color: var(--muted);
+  text-align: center;
+  background: #10141e;
+  border: 1px dashed #363c4e;
+  border-radius: 14px;
+}
+
+.notice {
+  margin: 18px 0;
+  padding: 14px 16px;
+  color: #d7d1ff;
+  background: rgba(139, 124, 255, 0.1);
+  border: 1px solid rgba(139, 124, 255, 0.25);
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 205px minmax(0, 1fr);
+  }
+
+  .app > aside {
+    padding: 22px 12px;
+  }
+
+  .app > main {
+    padding: 28px 22px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .top {
+    align-items: flex-start;
+  }
+
+  .top .primary {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .app > aside {
+    position: relative;
+    top: auto;
+    width: 100%;
+    height: auto;
+    padding: 14px 16px 10px;
+    gap: 14px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    padding: 0 2px;
+    font-size: 23px;
+  }
+
+  nav {
+    display: flex;
+    gap: 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 2px 1px 8px;
+    scrollbar-width: thin;
+  }
+
+  nav button {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: 42px;
+    padding: 10px 13px;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  .app > main {
+    width: 100%;
+    padding: 22px 15px 32px;
+  }
+
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .top .primary {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: clamp(25px, 7vw, 31px);
+  }
+
+  h2 {
+    font-size: 19px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .grid > .panel {
+    padding: 18px;
+  }
+
+  .stat {
+    font-size: 28px;
+  }
+
+  .panel {
+    padding: 18px 15px;
+    border-radius: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  textarea {
+    min-height: 200px;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  .post {
+    padding: 15px;
+  }
+
+  .post-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .post-actions button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .empty {
+    padding: 24px 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app > main {
+    padding-right: 11px;
+    padding-left: 11px;
+  }
+
+  .panel {
+    padding: 15px 12px;
+  }
+
+  .post {
+    padding: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+
+.welcome-panel {
+  margin-top: 18px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(139, 124, 255, 0.16), transparent 55%),
+    var(--panel);
+}
+
+.welcome-panel h2 {
+  margin-top: 16px;
+  margin-bottom: 10px;
+  font-size: clamp(21px, 3vw, 27px);
+}
+
+.welcome-panel p {
+  max-width: 620px;
+}
+
+.welcome-panel .actions {
+  margin: 18px 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand">Post<span>Craft</span></div>
+    <nav>
+      <button class="active" data-view="dashboard">▦ Обзор</button>
+      <button data-view="editor">✎ Редактор</button>
+      <button data-view="plan">▦ Контент-план</button>
+      <button data-view="library">▤ Библиотека</button>
+      <button data-view="settings">⚙ Настройки</button>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="top">
+      <div>
+        <h1 id="page-title">Твоя мастерская контента</h1>
+        <p>Создавай, сохраняй и планируй публикации.</p>
+      </div>
+      <button class="primary" id="new-post">+ Новая публикация</button>
+    </header>
+
+    <section class="section active" id="dashboard">
+      <div class="grid">
+        <div class="panel"><span class="muted">Всего публикаций</span><div class="stat" id="total">0</div></div>
+        <div class="panel"><span class="muted">Черновики</span><div class="stat" id="drafts">0</div></div>
+        <div class="panel"><span class="muted">Запланировано</span><div class="stat" id="scheduled">0</div></div>
+      </div>
+      <div class="panel welcome-panel" id="welcome-panel" hidden>
+  <span class="pill">Добро пожаловать в PostCraft</span>
+  <h2>Твоя мастерская контента начинается здесь 🎬</h2>
+  <p>
+    Создавай публикации, сохраняй идеи, собирай контент-план
+    и возвращайся к черновикам в любое время.
+  </p>
+  <div class="actions">
+    <button class="primary" id="welcome-new-post" type="button">
+      Создать первую публикацию
+    </button>
+  </div>
+  <p class="muted">
+    Начни с шаблона или напиши текст с нуля.
+  </p>
+</div>
+      <div class="panel" style="margin-top:18px">
+        <h2>Последние публикации</h2>
+        <div id="recent" class="post-list"></div>
+      </div>
+    </section>
+
+    <section class="section" id="editor">
+      <div class="panel">
+        <h2 id="editor-title">Новая публикация</h2>
+        <form id="post-form">
+          <input type="hidden" id="post-id">
+          <div class="field">
+            <label for="template">Шаблон</label>
+            <select id="template">
+              <option value="">Пустая публикация</option>
+              <option value="story">История о фильме</option>
+              <option value="news">Киноновость</option>
+              <option value="review">Обзор</option>
+              <option value="question">Вопрос аудитории</option>
+              <option value="list">Подборка</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="title">Заголовок</label>
+            <input id="title" required maxlength="160" placeholder="Например, 5 деталей, которые вы пропустили">
+          </div>
+          <div class="field">
+            <label for="body">Текст публикации</label>
+            <textarea id="body" required placeholder="Напиши свою публикацию..."></textarea>
+            <div class="muted"><span id="char-count">0</span> символов</div>
+          </div>
+          <div class="form-grid">
+            <div class="field">
+              <label for="category">Категория</label>
+              <select id="category">
+                <option>Кино</option><option>Новости</option><option>Обзоры</option>
+                <option>Образование</option><option>Бизнес</option><option>Другое</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="status">Статус</label>
+              <select id="status">
+                <option value="draft">Черновик</option>
+                <option value="scheduled">Запланировано</option>
+                <option value="published">Опубликовано</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="date">Дата публикации (если нужна)</label>
+            <input type="date" id="date">
+          </div>
+          <div class="field">
+            <label for="tags">Хэштеги</label>
+            <input id="tags" placeholder="#кино #фильмы #факты">
+          </div>
+          <div class="actions">
+            <button class="primary" type="submit">Сохранить публикацию</button>
+            <button class="secondary" type="button" id="clear-form">Очистить</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="plan">
+      <div class="panel">
+        <h2>Контент-план</h2>
+        <p>Публикации с указанной датой, отсортированные по времени.</p>
+        <div id="plan-list" class="post-list"></div>
+      </div>
+    </section>
+
+    <section class="section" id="library">
+      <div class="panel">
+        <h2>Библиотека публикаций</h2>
+        <div class="toolbar">
+          <input id="search" placeholder="Поиск по заголовку или тексту">
+          <select id="filter">
+            <option value="all">Все статусы</option>
+            <option value="draft">Черновики</option>
+            <option value="scheduled">Запланированные</option>
+            <option value="published">Опубликованные</option>
+          </select>
+        </div>
+        <div id="library-list" class="post-list"></div>
+      </div>
+    </section>
+
+    <section class="section" id="settings">
+      <div class="panel">
+        <h2>Настройки и данные</h2>
+        <p>В этой версии публикации хранятся только в текущем браузере.</p>
+        <div class="notice">Перед очисткой данных экспортируй резервную копию. Удаление данных браузера может удалить сохранённые публикации.</div>
+        <div class="actions">
+          <button class="primary" id="export">Экспортировать JSON</button>
+          <button class="secondary" id="import-button">Импортировать JSON</button>
+          <input id="import-file" type="file" accept=".json,application/json" hidden>
+        </div>
+        <p class="muted">PostCraft MVP · Версия 0.1</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const STORAGE_KEY = "postcraft-posts-v1";
+
+  const templates = {
+    story: {
+      title: "🎬 История, стоящая за фильмом",
+      body: "Некоторые фильмы запоминаются не только сюжетом, но и историями, которые остались за кадром.\\n\\nЧто происходило на съёмках? Какие решения приняли режиссёр и актёры? И какая деталь меняет наше восприятие фильма?\\n\\nА какая закулисная история впечатлила вас больше всего?"
+    },
+    news: {
+      title: "📰 Главная киноновость",
+      body: "В мире кино произошло событие, заслуживающее внимания.\\n\\nЧто известно: [добавь подтверждённые факты].\\n\\nПочему это важно для зрителей: [объясни контекст].\\n\\nКак вы относитесь к этой новости?"
+    },
+    review: {
+      title: "🍿 Стоит ли смотреть этот фильм?",
+      body: "Этот фильм предлагает зрителю нечто большее, чем просто историю.\\n\\nСюжет без спойлеров: [добавь описание].\\n\\nАктёрская игра и режиссура: [добавь свои наблюдения].\\n\\nКому стоит посмотреть: [твоя рекомендация]."
+    },
+    question: {
+      title: "🎥 А что думаете вы?",
+      body: "Есть фильмы, которые хочется обсуждать даже спустя годы.\\n\\nКакой фильм произвёл на вас самое сильное впечатление и почему? Расскажите в комментариях!"
+    },
+    list: {
+      title: "🎬 Фильмы, которые стоит увидеть",
+      body: "Иногда одна удачная рекомендация может открыть целый мир.\\n\\nРасскажите о каждом фильме, почему он заслуживает внимания, избегая спойлеров.\\n\\nКакой фильм вы бы добавили в эту подборку?"
+    }
+  };
+
+  let posts = loadPosts();
+
+  function loadPosts() {
+    try {
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      return Array.isArray(data) ? data.filter(p =>
+        p && typeof p.id === "string" &&
+        typeof p.title === "string" &&
+        typeof p.body === "string"
+      ) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function savePosts() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+      renderAll();
+      return true;
+    } catch {
+      alert("Не удалось сохранить данные. Возможно, хранилище заполнено.");
+      return false;
+    }
+  }
+
+  const statusNames = {
+    draft: "Черновик",
+    scheduled: "Запланировано",
+    published: "Опубликовано"
+  };
+
+  function escapeHTML(value = "") {
+    return String(value).replace(/[&<>"']/g, ch => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;",
+      '"': "&quot;", "'": "&#39;"
+    }[ch]));
+  }
+
+  function formatDate(value) {
+    if (!value) return "Без даты";
+    const parts = value.split("-");
+    return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : value;
+  }
+
+  function postCard(post) {
+    return `
+      <article class="post">
+        <div class="post-head">
+          <div>
+            <h3>${escapeHTML(post.title)}</h3>
+            <span class="pill">${escapeHTML(statusNames[post.status] || "Черновик")}</span>
+            <span class="pill">${escapeHTML(post.category || "Другое")}</span>
+            ${post.date ? `<span class="pill">${escapeHTML(formatDate(post.date))}</span>` : ""}
+          </div>
+        </div>
+        <p>${escapeHTML(post.body.slice(0, 240))}${post.body.length > 240 ? "…" : ""}</p>
+        ${post.tags ? `<div class="muted">${escapeHTML(post.tags)}</div>` : ""}
+        <div class="post-actions">
+          <button class="secondary" data-action="edit" data-id="${escapeHTML(post.id)}">Редактировать</button>
+          <button class="secondary" data-action="copy" data-id="${escapeHTML(post.id)}">Копировать</button>
+          <button class="secondary" data-action="delete" data-id="${escapeHTML(post.id)}">Удалить</button>
+        </div>
+      </article>`;
+  }
+
+  function renderList(element, items, emptyText) {
+    $(element).innerHTML = items.length
+      ? items.map(postCard).join("")
+      : `<div class="empty">${escapeHTML(emptyText)}</div>`;
+  }
+
+  function renderAll() {
+    $("total").textContent = posts.length;
+    $("welcome-panel").hidden = posts.length > 0;
+    $("drafts").textContent = posts.filter(p => p.status === "draft").length;
+    $("scheduled").textContent = posts.filter(p => p.status === "scheduled").length;
+
+    const newest = [...posts].sort((a, b) => b.updatedAt - a.updatedAt);
+    renderList("recent", newest.slice(0, 3), "Пока нет публикаций. Создай первую!");
+    renderList("plan-list",
+      [...posts].filter(p => p.date).sort((a, b) => a.date.localeCompare(b.date)),
+      "Публикаций с датой пока нет.");
+
+    const query = $("search").value.trim().toLowerCase();
+    const filter = $("filter").value;
+    const filtered = newest.filter(p => {
+      const matchesQuery = `${p.title} ${p.body} ${p.tags}`.toLowerCase().includes(query);
+      return matchesQuery && (filter === "all" || p.status === filter);
+    });
+    renderList("library-list", filtered, "Ничего не найдено.");
+  }
+
+  function showView(view) {
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    $(view).classList.add("active");
+    document.querySelectorAll("nav button").forEach(b =>
+      b.classList.toggle("active", b.dataset.view === view)
+    );
+
+    const titles = {
+      dashboard: "Твоя мастерская контента",
+      editor: "Редактор публикаций",
+      plan: "Контент-план",
+      library: "Библиотека публикаций",
+      settings: "Настройки"
+    };
+    $("page-title").textContent = titles[view];
+  }
+
+  function clearForm() {
+    $("post-form").reset();
+    $("post-id").value = "";
+    $("editor-title").textContent = "Новая публикация";
+    $("char-count").textContent = "0";
+  }
+
+  function editPost(id) {
+    const p = posts.find(item => item.id === id);
+    if (!p) return;
+
+    $("post-id").value = p.id;
+    $("title").value = p.title;
+    $("body").value = p.body;
+    $("category").value = p.category || "Кино";
+    $("status").value = p.status || "draft";
+    $("date").value = p.date || "";
+    $("tags").value = p.tags || "";
+    $("char-count").textContent = p.body.length;
+    $("editor-title").textContent = "Редактирование публикации";
+    showView("editor");
+  }
+
+  document.querySelectorAll("nav button").forEach(button => {
+    button.addEventListener("click", () => showView(button.dataset.view));
+  });
+
+  $("new-post").addEventListener("click", () => {
+    clearForm();
+    showView("editor");
+  });
+$("welcome-new-post").addEventListener("click", () => {
+  clearForm();
+  showView("editor");
+});
+
+  $("clear-form").addEventListener("click", clearForm);
+
+  
+$("template").addEventListener("change", event => {
+  const t = templates[event.target.value];
+
+  if (!t) return;
+
+  $("title").value = t.title;
+  $("body").value = t.body;
+  $("char-count").textContent = $("body").value.length;
+});
+
+  $("body").addEventListener("input", () => {
+    $("char-count").textContent = $("body").value.length;
+  });
+
+  $("post-form").addEventListener("submit", event => {
+    event.preventDefault();
+
+    const id = $("post-id").value || (
+      crypto.randomUUID ? crypto.randomUUID() :
+      `${Date.now()}-${Math.random().toString(36).slice(2)}`
+    );
+
+    const existing = posts.find(p => p.id === id);
+    const post = {
+      id,
+      title: $("title").value.trim(),
+      body: $("body").value.trim(),
+      category: $("category").value,
+      status: $("status").value,
+      date: $("date").value,
+      tags: $("tags").value.trim(),
+      createdAt: existing ? existing.createdAt : Date.now(),
+      updatedAt: Date.now()
+    };
+
+    if (!post.title || !post.body) {
+      alert("Добавь заголовок и текст публикации.");
+      return;
+    }
+
+    if (existing) posts = posts.map(p => p.id === id ? post : p);
+    else posts.unshift(post);
+
+    if (savePosts()) {
+      clearForm();
+      showView("library");
+    }
+  });
+
+  document.addEventListener("click", async event => {
+    const button = event.target.closest("button[data-action]");
+    if (!button) return;
+
+    const post = posts.find(p => p.id === button.dataset.id);
+    if (!post) return;
+
+    if (button.dataset.action === "edit") editPost(post.id);
+
+    if (button.dataset.action === "delete") {
+      if (!confirm(`Удалить публикацию «${post.title}»?`)) return;
+      posts = posts.filter(p => p.id !== post.id);
+      savePosts();
+    }
+
+    if (button.dataset.action === "copy") {
+      const text = `${post.title}\n\n${post.body}\n\n${post.tags}`.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        alert("Публикация скопирована.");
+      } catch {
+        const area = document.createElement("textarea");
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        const copied = document.execCommand("copy");
+        area.remove();
+        alert(copied ? "Публикация скопирована." : "Не удалось скопировать текст.");
+      }
+    }
+  });
+
+  $("search").addEventListener("input", renderAll);
+  $("filter").addEventListener("change", renderAll);
+
+  $("export").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(posts, null, 2)], {
+      type: "application/json"
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "postcraft-backup.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $("import-button").addEventListener("click", () => $("import-file").click());
+
+  
+$("import-file").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const previousPosts = posts;
+  let previousStorage = null;
+
+  try {
+    previousStorage = localStorage.getItem(STORAGE_KEY);
+
+    const data = JSON.parse(await file.text());
+
+    if (
+      !Array.isArray(data) ||
+      data.length > 5000 ||
+      !data.every(p =>
+        p &&
+        typeof p.id === "string" &&
+        p.id.trim().length > 0 &&
+        p.id.length <= 200 &&
+        typeof p.title === "string" &&
+        p.title.length <= 160 &&
+        typeof p.body === "string" &&
+        p.body.length <= 200000
+      )
+    ) {
+      throw new Error("Неверный формат резервной копии");
+    }
+
+    const ids = data.map(p => p.id);
+
+    if (new Set(ids).size !== ids.length) {
+      throw new Error("В файле обнаружены повторяющиеся ID публикаций");
+    }
+
+    const importedPosts = data.map(p => ({
+      id: p.id,
+      title: p.title,
+      body: p.body,
+      category: typeof p.category === "string" ? p.category : "Другое",
+      status: ["draft", "scheduled", "published"].includes(p.status)
+        ? p.status
+        : "draft",
+      date: typeof p.date === "string" ? p.date : "",
+      tags: typeof p.tags === "string" ? p.tags : "",
+      createdAt: Number(p.createdAt) || Date.now(),
+      updatedAt: Number(p.updatedAt) || Date.now()
+    }));
+
+    const confirmed = confirm(
+      `В файле найдено публикаций: ${importedPosts.length}.\n` +
+      `Сейчас в библиотеке: ${posts.length}.\n\n` +
+      "Импорт заменит текущую библиотеку. " +
+      "Перед продолжением рекомендуется скачать резервную копию через настройки.\n\n" +
+      "Продолжить?"
+    );
+
+    if (!confirmed) return;
+
+    posts = importedPosts;
+
+    if (savePosts()) {
+      alert(`Импорт завершён. Загружено публикаций: ${posts.length}.`);
+    } else {
+      posts = previousPosts;
+
+      try {
+        if (previousStorage === null) {
+          localStorage.removeItem(STORAGE_KEY);
+        } else {
+          localStorage.setItem(STORAGE_KEY, previousStorage);
+        }
+      } catch {
+        alert("Не удалось восстановить прежнее хранилище автоматически.");
+      }
+    }
+  } catch (error) {
+    alert(
+      "Не удалось импортировать файл. Проверь, что это корректная " +
+      "резервная копия PostCraft в формате JSON.\n\n" +
+      `Причина: ${error.message}`
+    );
+  } finally {
+    event.target.value = "";
+  }
+});
+
+  renderAll();
+</script>
+</body>
+</html>
